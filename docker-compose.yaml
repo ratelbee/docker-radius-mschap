@@ -13,5 +13,3 @@ services:
          - ./certs:/etc/raddb/certs:ro
       network_mode: "host"
       restart: always
-      O0
-M0dP0dbmCg
