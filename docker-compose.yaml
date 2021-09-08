@@ -9,7 +9,9 @@ services:
          - /var/lib/samba/winbindd_privileged:/var/lib/samba/winbindd_privileged:ro
          - ./log:/var/log/radius
          - /etc/samba/smb.conf:/etc/samba/smb.conf:ro
-         - ./conf /conf
+         - ./conf:/conf
          - ./certs:/etc/raddb/certs:ro
       network_mode: "host"
       restart: always
+      O0
+M0dP0dbmCg
