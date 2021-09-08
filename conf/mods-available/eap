@@ -8,7 +8,7 @@ eap {
 		private_key_password = whatever
 		private_key_file = ${certdir}/server.key
 		certificate_file = ${certdir}/server.crt
-		ca_file = ${cadir}/ca.pem
+		ca_file = ${cadir}/ca.crt
 		dh_file = ${certdir}/dh
 		ca_path = ${cadir}
 		cipher_list = "DEFAULT"
