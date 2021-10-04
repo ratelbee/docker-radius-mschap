@@ -1,5 +1,4 @@
 #!/bin/sh
-#hostname $HOSTNAME
 
 cat <<EOF > /etc/krb5.conf
 [libdefaults]
@@ -86,72 +85,13 @@ netgroup:       nis
 sudoers:        files
 EOF
 
-cat <<EOF > /etc/freeradius/3.0/proxy.conf
-proxy server {
-	default_fallback = no
-}
-home_server localhost {
-	type = auth
-	ipaddr = 127.0.0.1
-	port = 1812
-	secret = ${RADIUS_SECRET}
-	response_window = 20
-	zombie_period = 40
-	revive_interval = 120
-	status_check = status-server
-	check_interval = 30
-	check_timeout = 4
-	num_answers_to_alive = 3
-	max_outstanding = 65536
-	coa {
-		irt = 2
-		mrt = 16
-		mrc = 5
-		mrd = 30
-	}
-	limit {
-	      max_connections = 16
-	      max_requests = 0
-	      lifetime = 0
-	      idle_timeout = 0
-	}
-}
-home_server_pool my_auth_failover {
-	type = fail-over
-	home_server = localhost
-}
-realm LOCAL {
-}
-realm ${FQDN_SHORT} {
-}
-realm ${FQDN} {
-}
-EOF
-
-
-
-ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
 echo $KRB_PASS | kinit --password-file=STDIN $KRB_LOGIN
 net ads -k join
 net ads -k keytab create
 kdestroy
-
-service winbind restart
+service smbd restart && service nmbd restart && service winbind restart
 
 cp -r /conf/raddb/* /etc/freeradius/3.0/
+rm etc/freeradius/3.0/sites-enabled/inner-tunnel
 
-if [[ $MODE == "PEAP" ]]; then
-   echo "EAP SUCCESS"
-   ln -s /etc/freeradius/3.0/sites-avilable/peap /etc/freeradius/3.0/sites-enabled/
-elif [[ $MODE == "PEAP-AND-MAC" ]]; then
-   echo "PEAP-AND-MAC SUCCESS"
-   ln -s /etc/freeradius/3.0/sites-avilable/peap-and-mac /etc/freeradius/3.0/sites-enabled/
-else
-   echo "DEFAULT PEAP SUCCESS"
-   ln -s /etc/freeradius/3.0/sites-avilable/peap /etc/freeradius/3.0/sites-enabled/
-fi
-
-rm /etc/freeradius/3.0/sites-enabled/default
-
-freeradius -f
+freeradius -X
