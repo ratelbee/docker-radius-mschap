@@ -1,11 +1,4 @@
 #!/bin/sh
-cat <<EOF > /etc/environment
-SSL_CERT_PATH="/etc/ssl/certs/ssl-cert-snakeoil.pem"
-SSL_KEY_PATH="/etc/ssl/private/ssl-cert-snakeoil.key"
-SSL_CA_PATH="/etc/ssl/certs/ca-certificates.crt"
-DH_PATH="/etc/freeradius/3.0/certs/dh"
-EOF
-
 hostname $HOSTNAME
 
 cat <<EOF > /etc/krb5.conf
