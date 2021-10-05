@@ -12,10 +12,10 @@
 
 docker-build:
   # Use the official docker image.
-  image: docker:20
+  image: docker:latest
   stage: build
   tags:
-    - root-docker
+    - fm-gl-rnr-ub-docker
   services:
     - docker:20-dind
   before_script:
