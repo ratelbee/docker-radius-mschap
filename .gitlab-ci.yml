@@ -31,5 +31,4 @@ docker-build:
     - if: $CI_COMMIT_BRANCH
       exists:
         - Dockerfile
-  except:
-    - master
+  
