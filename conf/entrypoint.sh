@@ -1,5 +1,5 @@
 #!/bin/sh
-cat <<EOF > /etc/krb5.conf
+cat <<EOF > /etc/environment
 SSL_CERT_PATH="/etc/ssl/certs/ssl-cert-snakeoil.pem"
 SSL_KEY_PATH="/etc/ssl/private/ssl-cert-snakeoil.key"
 SSL_CA_PATH="/etc/ssl/certs/ca-certificates.crt"
@@ -93,14 +93,6 @@ netgroup:       nis
 sudoers:        files
 EOF
 
-echo $KRB_PASS | kinit --password-file=STDIN $KRB_LOGIN
-net ads -k join
-net ads -k keytab create
-kdestroy
-service smbd restart && service nmbd restart && service winbind restart
-
-cp -r /conf/raddb/* /etc/freeradius/3.0/
-
 cat <<EOF > /etc/freeradius/3.0/proxy.conf
 proxy server {
 	default_fallback = no
@@ -142,6 +134,14 @@ realm ${FQDN_SHORT} {
 realm ${FQDN} {
 }
 EOF
+
+echo $KRB_PASS | kinit --password-file=STDIN $KRB_LOGIN
+net ads -k join
+net ads -k keytab create
+kdestroy
+service smbd restart && service nmbd restart && service winbind restart
+
+cp -r /conf/raddb/* /etc/freeradius/3.0/
 
 rm etc/freeradius/3.0/sites-enabled/inner-tunnel
 
