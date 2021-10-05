@@ -10,7 +10,7 @@ docker-build:
   image: docker
   stage: build
   tags:
-    - fm-gl-rnr-ub-docker
+    - fm-gl-rnr-ub-docker-pub
   services:
     - docker:dind
   # Default branch leaves tag empty (= latest tag)
