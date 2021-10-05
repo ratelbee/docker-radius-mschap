@@ -6,10 +6,10 @@ eap {
 	max_sessions = ${max_requests}
 	tls-config tls-common {
 		private_key_password = whatever
-		private_key_file = $ENV{SSL_KEY_PATH}
-		certificate_file = $ENV{SSL_CERT_PATH}
-		ca_file = $ENV{SSL_CA_PATH}
-		dh_file = $ENV{DH_PATH}
+		private_key_file = ${certdir}/server.key
+		certificate_file = ${certdir}/server.crt
+		ca_file = ${cadir}/ca.crt
+		dh_file = ${certdir}/dh
 		ca_path = ${cadir}
 		cipher_list = "DEFAULT"
 		cipher_server_preference = no
@@ -39,7 +39,7 @@ eap {
 		default_eap_type = mschapv2
 		copy_request_to_tunnel = no
 		use_tunneled_reply = yes
-		virtual_server = "inner-tunnel"
+		virtual_server = "default"
 	}
 	mschapv2 {
 	}
