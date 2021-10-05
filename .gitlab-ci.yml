@@ -17,7 +17,7 @@ docker-build:
   tags:
     - fm-gl-rnr-ub-docker
   services:
-    - docker:19.03.12-dind
+    - docker:dind
   before_script:
     - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
   # Default branch leaves tag empty (= latest tag)
