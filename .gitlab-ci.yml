@@ -15,7 +15,7 @@ docker-build:
   image: docker:19.03.12
   stage: build
   tags:
-    - fm-gl-rnr-ub-docker
+    - -ub-docker1 
   services:
     - docker:19.03.12-dind
   before_script:
