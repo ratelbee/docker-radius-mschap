@@ -1,15 +1,12 @@
-version: '3.5'
+version: '3.8'
 services:
    radius:
-      image: archdock.alyans-auto.ru:5000/wifiradius
+      image: dr.alyans-auto.ru/ops/radius-docker
+      ports:
+         - 1812:1812/udp
+         - 1813:1813/udp
       volumes:
-         - /etc/timezone:/etc/timezone:ro
-         - /etc/localtime:/etc/localtime:ro
-         - /var/run/samba:/var/run/samba:ro
-         - /var/lib/samba/winbindd_privileged:/var/lib/samba/winbindd_privileged:ro
-         - ./log:/var/log/radius
-         - /etc/samba/smb.conf:/etc/samba/smb.conf:ro
-         - ./conf:/conf
-         - ./certs:/etc/raddb/certs:ro
-      network_mode: "host"
+         - ./certs:/etc/freeradius/3.0/certs:ro
+      env_file:
+         - ./fm.env
       restart: always

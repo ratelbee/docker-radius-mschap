@@ -1,5 +1,5 @@
 #!/bin/sh
-
+hostname $HOSTNAME
 cat <<EOF > /etc/krb5.conf
 [libdefaults]
         default_realm 	= 	${FQDN}
