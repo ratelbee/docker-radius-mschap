@@ -128,6 +128,8 @@ realm ${FQDN} {
 }
 EOF
 
+ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 echo $KRB_PASS | kinit --password-file=STDIN $KRB_LOGIN
 net ads -k join
 net ads -k keytab create
