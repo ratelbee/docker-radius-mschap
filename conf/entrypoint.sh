@@ -1,5 +1,5 @@
 #!/bin/sh
-hostname $HOSTNAME
+#hostname $HOSTNAME
 
 cat <<EOF > /etc/krb5.conf
 [libdefaults]
