@@ -3,7 +3,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update \
 && apt install -y freeradius \
 winbind heimdal-clients
-ADD ./conf /conf
+COPY ./conf /conf
 RUN chmod +x /conf/entrypoint.sh \
 && rm -rf /var/lib/apt/lists/*
 ENV LOGNAME="root" \
