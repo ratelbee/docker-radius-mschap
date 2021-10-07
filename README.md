@@ -1,13 +1,13 @@
-Этот образ предназначен для авторизации на Wi-Fi устройствах с помощую учетных записей MS Active Directory, используя EAP MSCHAP.
+This image  is Intended for authorization on Wi-Fi devices using MS Active Directory accounts using EAP MSCHAP.
  
-Чеклист для корректной работы и долго аптайма:
+Checklist for correct operation and Long Uptime:
 
-- По DNS записи соответствующей переменной FQDN в сети должен быть доступен контроллер домен, или множество контролеров.
-- В Active Directory создайте группу содержащую пользователей или группы пользователей, которым разрешена авторизация с помощью сервиса. Название группы передается в переменную ACCESS_GROUP.
-- Пароль для авторизации Wi-Fi устройств на радиус сервере задается в переменной RADIUS_SECRET, устройство с любым IP адресом получит доступ к сервису.
-- Передайте в переменную TZ временную зону соответсвующую временной зоне контроллера домена.
-- В Active Directory создайте пользователя обладающего правами добавления компьютера в домен и способного читать список групп и пользователей. Учетные данные пользователя задаются в переменных KRB_LOGIN и KRB_PASS.
-- По умолчанию SSL сертификаты и ключи генерируются при каждом запуске контейнера. Если есть необходимость в постоянных сертификатах, любым доступным способом сгенерируйте сертификаты и примонтируйте их внутрь при запуске контейнера, передав в переменные SSL_CERT_PATH, SSL_KEY_PATH, SSL_CA_PATH, DH_PATH путь внутри контейнера.
+- According to the DNS record of the corresponding FQDN variable, a domain controller, or many controllers, must be available on the network.
+- In Active Directory, create a group containing users or groups of users who are allowed to authorize using the service. The group name is passed to the ACCESS_GROUP variable.
+- The password for authorizing Wi-Fi devices on the radius server is set in the RADIUS_SECRET variable, a device with any IP address will gain access to the service.
+- Pass in the TZ variable the time zone corresponding to the time zone of the domain controller.
+- In Active Directory, create a user with the rights to add a computer to the domain and able to read the list of groups and users. User credentials are specified in the KRB_LOGIN and KRB_PASS variables.
+- By default, SSL certificates and keys are generated each time the container is started. If there is a need for permanent certificates, generate certificates in any available way and mount them inside when starting the container, passing the path inside the container to the SSL_CERT_PATH, SSL_KEY_PATH, SSL_CA_PATH, DH_PATH variables. 
 
 Example of Docker run
 
