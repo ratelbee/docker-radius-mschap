@@ -134,7 +134,7 @@ echo $KRB_PASS | kinit --password-file=STDIN $KRB_LOGIN
 net ads -k join
 net ads -k keytab create
 kdestroy
-service smbd restart && service nmbd restart && service winbind restart
+winbind restart
 
 cp -r /conf/raddb/* /etc/freeradius/3.0/
 
