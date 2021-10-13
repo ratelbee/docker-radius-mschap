@@ -10,10 +10,11 @@ RUN chmod +x /conf/entrypoint.sh \
 #MAC Auth
 files authorized_macs {
         key = "%{Calling-Station-Id}"
-        usersfile = ${confdir}/authorized_macs
+        usersfile = ${MAC_LIST}
 }
 EOF
 ENV LOGNAME="root" \
+MAC_LIST_PATH=/etc/freeradius/3.0/authorized_macs
 SSL_CERT_PATH="/etc/ssl/certs/ssl-cert-snakeoil.pem" \
 SSL_KEY_PATH="/etc/ssl/private/ssl-cert-snakeoil.key" \
 SSL_CA_PATH="/etc/ssl/certs/ca-certificates.crt" \
