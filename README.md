@@ -23,6 +23,8 @@ docker run -itd \
    -e TZ="Europe/Moscow" \
    -e KRB_LOGIN="AD_USER" \
    -e KRB_PASS="AD_PASSWORD" \
+   -e MODE=PEAP-AND-MAC \
+   -v $(pwd)/authorized_macs:/etc/freeradius/3.0/authorized_macs \
    ratelbee/docker-radius-mschap
 ```
 
@@ -38,6 +40,8 @@ services:
          - 1813:1813/udp
       env_file:
          - ./var.env
+      volume: 
+         - ./authorized_macs:/etc/freeradius/3.0/authorized_macs
       restart: always
 ```
 Required Variables
