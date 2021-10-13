@@ -10,7 +10,6 @@ listen {
        type = acct
 }
 authorize {
-	mschap
 	suffix
 	ntdomain
 	eap {

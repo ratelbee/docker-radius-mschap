@@ -1,0 +1,74 @@
+server default {
+listen {
+       ipaddr = *
+       port = 1812
+       type = auth
+}
+listen {
+       ipaddr = *
+       port = 1813
+       type = acct
+}
+authorize {
+        preprocess
+        rewrite_calling_station_id
+        authorized_macs
+        if (!ok) {
+        # Reject if the MAC address was not permitted.
+                reject
+        }
+
+        # If this is NOT 802.1x, mac-auth
+        if (!EAP-Message) {
+                # MAC address has already been checked, so accept
+                update control {
+                        Auth-Type := Accept
+                }
+        }
+        else {
+             # Normal FreeRADIUS virtual server config goes here e.g.
+             suffix
+             ntdomain
+             eap {
+                ok = return
+             }
+             -sql
+             -ldap
+             files
+             expiration
+             logintime
+        }
+}
+authenticate {
+	Auth-Type MS-CHAP {
+		mschap
+	}
+	mschap
+	eap
+}
+session {
+	radutmp
+}
+post-auth {
+	if (0) {
+		update reply {
+			User-Name !* ANY
+			Message-Authenticator !* ANY
+			EAP-Message !* ANY
+			Proxy-State !* ANY
+			MS-MPPE-Encryption-Types !* ANY
+			MS-MPPE-Encryption-Policy !* ANY
+			MS-MPPE-Send-Key !* ANY
+			MS-MPPE-Recv-Key !* ANY
+		}
+	Post-Auth-Type REJECT {
+		attr_filter.access_reject
+		}
+	}
+}
+pre-proxy {
+}
+post-proxy {
+	eap
+}
+}
