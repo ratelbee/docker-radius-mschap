@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #hostname $HOSTNAME
 
 cat <<EOF > /etc/krb5.conf
