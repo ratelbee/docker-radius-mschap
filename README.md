@@ -1,15 +1,29 @@
-This image  is Intended for authorization on Wi-Fi devices using MS Active Directory accounts using EAP MSCHAP.
+# This image  is Intended for authorization on Wi-Fi devices using MS Active Directory accounts using EAP MSCHAP.
  
-Checklist for correct operation and Long Uptime:
+## Checklist for correct operation and Long Uptime:
 
 - According to the DNS record of the corresponding FQDN variable, a domain controller, or many controllers, must be available on the network.
 - In Active Directory, create a group containing users or groups of users who are allowed to authorize using the service. The group name is passed to the ACCESS_GROUP variable.
 - The password for authorizing Wi-Fi devices on the radius server is set in the RADIUS_SECRET variable, a device with any IP address will gain access to the service.
 - Pass in the TZ variable the time zone corresponding to the time zone of the domain controller.
 - In Active Directory, create a user with the rights to add a computer to the domain and able to read the list of groups and users. User credentials are specified in the KRB_LOGIN and KRB_PASS variables.
-- By default, SSL certificates and keys are generated each time the container is started. If there is a need for permanent certificates, generate certificates in any available way and mount them inside when starting the container, passing the path inside the container to the SSL_CERT_PATH, SSL_KEY_PATH, SSL_CA_PATH, DH_PATH variables. 
 
-Example of Docker run
+## Features
+### 1. Custom SSL keys
+By default, SSL certificates and keys are generated each time the container is started. If there is a need for permanent certificates, generate certificates in any available way and mount them inside when starting the container, passing the path inside the container to the SSL_CERT_PATH, SSL_KEY_PATH, SSL_CA_PATH, DH_PATH variables. 
+### 2. Two factor authorization via the MAC address.
+- Two modes can be set via the MODE variable: PEAP and PEAP-AND-MAC. Default set PEAP.
+- Create a file containing a line-by-line list of MAC addresses of devices that are allowed authorization
+Example:
+  ```
+  00-00-00-00-00-01
+  00-00-00-00-00-02
+  00-00-00-00-00-03
+  ```
+- Mount the file inside the container at startup
+Example: -v $ (pwd) /mac:/etc/freeradius/3.0/authorized_macs
+- you can set the variable MAC_LIST_PATH indicating the path to the file containing the list of mac addresses inside the container.
+(Default: /etc/freeradius/3.0/authorized_macs) 
 
 ```
 docker run -itd \
