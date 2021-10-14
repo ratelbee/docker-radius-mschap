@@ -7,6 +7,7 @@ COPY ./conf /conf
 RUN chmod +x /conf/entrypoint.sh \
 && rm -rf /var/lib/apt/lists/*
 ENV LOGNAME="root" \
+MAC_LIST_PATH=/etc/freeradius/3.0/authorized_macs \
 SSL_CERT_PATH="/etc/ssl/certs/ssl-cert-snakeoil.pem" \
 SSL_KEY_PATH="/etc/ssl/private/ssl-cert-snakeoil.key" \
 SSL_CA_PATH="/etc/ssl/certs/ca-certificates.crt" \
