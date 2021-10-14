@@ -141,24 +141,27 @@ service winbind restart
 
 cp -r /conf/raddb/* /etc/freeradius/3.0/
 
-if [[ $MODE == "PEAP" ]]; then
+if [ $MODE == "PEAP" ]; then
    echo "EAP SUCCESS"
    ln -s /etc/freeradius/3.0/sites-available/peap /etc/freeradius/3.0/sites-enabled/
-elif [[ -f $MAC_LIST_PATH && $MODE == "PEAP-AND-MAC" ]]; then
+   rm /etc/freeradius/3.0/sites-enabled/peap-and-mac || echo 'PASS'
+elif -f $MAC_LIST_PATH && [ $MODE == "PEAP-AND-MAC" ]; then
    echo "PEAP-AND-MAC SUCCESS"
    ln -s /etc/freeradius/3.0/sites-available/peap-and-mac /etc/freeradius/3.0/sites-enabled/
    cat <<EOF >> /etc/freeradius/3.0/mods-available
 #MAC Auth
 files authorized_macs {
      key = "%{Calling-Station-Id}"
-     usersfile = $ENV{MAC_LIST}
+     usersfile = $MAC_LIST_PATH
 }
 EOF
+    rm /etc/freeradius/3.0/sites-enabled/peap || echo 'PASS'
 else
    echo "DEFAULT PEAP SUCCESS"
    ln -s /etc/freeradius/3.0/sites-available/peap /etc/freeradius/3.0/sites-enabled/
+   rm /etc/freeradius/3.0/sites-enabled/peap-and-mac || echo 'PASS'
 fi
 
-rm /etc/freeradius/3.0/sites-enabled/default
+rm /etc/freeradius/3.0/sites-enabled/default || echo 'PASS'
 
 freeradius -f
