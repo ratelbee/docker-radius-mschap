@@ -148,7 +148,7 @@ if [[ "$MODE" == "PEAP" ]]; then
 elif [ -f "$MAC_LIST_PATH" ] && [[ "$MODE" == "PEAP-AND-MAC" ]]; then
    echo "PEAP-AND-MAC SUCCESS"
    ln -s /etc/freeradius/3.0/sites-available/peap-and-mac /etc/freeradius/3.0/sites-enabled/
-   cat <<EOF >> /etc/freeradius/3.0/mods-available
+   cat <<EOF >> /etc/freeradius/3.0/mods-available/files
 #MAC Auth
 files authorized_macs {
      key = "%{Calling-Station-Id}"
