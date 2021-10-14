@@ -24,8 +24,3 @@ files {
 	acctusersfile = ${moddir}/accounting
 	preproxy_usersfile = ${moddir}/pre-proxy
 }
-#MAC Auth
-files authorized_macs {
-        key = "%{Calling-Station-Id}"
-        usersfile = $ENV{MAC_LIST}
-}

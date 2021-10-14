@@ -128,6 +128,8 @@ realm ${FQDN} {
 }
 EOF
 
+
+
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 echo $KRB_PASS | kinit --password-file=STDIN $KRB_LOGIN
@@ -139,6 +141,24 @@ service winbind restart
 
 cp -r /conf/raddb/* /etc/freeradius/3.0/
 
-rm etc/freeradius/3.0/sites-enabled/inner-tunnel
+if [[ $MODE == "PEAP" ]]; then
+   echo "EAP SUCCESS"
+   ln -s /etc/freeradius/3.0/sites-available/peap /etc/freeradius/3.0/sites-enabled/
+elif [[ -f $MAC_LIST_PATH && $MODE == "PEAP-AND-MAC" ]]; then
+   echo "PEAP-AND-MAC SUCCESS"
+   ln -s /etc/freeradius/3.0/sites-available/peap-and-mac /etc/freeradius/3.0/sites-enabled/
+   cat <<EOF >> /etc/freeradius/3.0/mods-available
+#MAC Auth
+files authorized_macs {
+     key = "%{Calling-Station-Id}"
+     usersfile = $ENV{MAC_LIST}
+}
+EOF
+else
+   echo "DEFAULT PEAP SUCCESS"
+   ln -s /etc/freeradius/3.0/sites-available/peap /etc/freeradius/3.0/sites-enabled/
+fi
+
+rm /etc/freeradius/3.0/sites-enabled/default
 
 freeradius -f
